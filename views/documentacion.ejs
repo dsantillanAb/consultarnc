@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Documentación API - Consulta RNC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+        :root {
+            --dark-green: #044234;
+            --medium-green: #065f46;
+            --light-green: #059669;
+            --accent-gold: #f59e0b;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-[var(--dark-green)] shadow-md sticky top-0 z-10">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <div class="flex items-center space-x-4">
+                        <span class="material-symbols-outlined text-4xl text-white">account_balance</span>
+                        <div>
+                            <h1 class="text-2xl font-bold text-white tracking-wide">Consulta RNC de la República Dominicana</h1>
+                            <p class="text-xs text-gray-300 mt-1">Solo se pueden consultar RNC Activos actualmente • Última actualización: 19/11/2024</p>
+                        </div>
+                    </div>
+                    <nav class="hidden md:flex items-center space-x-6">
+                        <a class="text-gray-300 hover:text-white transition-colors" href="/">Dashboard</a>
+                        <a class="text-white font-semibold" href="/documentacion">Documentación</a>
+                    </nav>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                            <span class="text-lg font-semibold text-[var(--dark-green)]">RD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+            <div class="max-w-7xl mx-auto space-y-8">
+                <!-- Título -->
+                <div class="bg-white p-6 md:p-8 rounded-lg border border-gray-200 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-4xl text-[var(--dark-green)]">code</span>
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900">Documentación de la API</h2>
+                            <p class="text-gray-600 mt-1">Guía completa para integrar la API de consulta de RNC</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Endpoint 1: Buscar por RNC -->
+                <section class="bg-white p-6 md:p-8 rounded-lg border border-gray-200 shadow-sm">
+                    <div class="border-l-4 border-[var(--medium-green)] pl-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">1. Buscar por RNC</h3>
+                        <p class="text-gray-600 mb-4">Obtiene la información de un contribuyente específico por su RNC.</p>
+                        
+                        <div class="bg-gray-50 p-4 rounded-md mb-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-2">Endpoint:</p>
+                            <code class="text-base text-[var(--medium-green)] font-mono">GET /api/rnc/:rnc</code>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-md mb-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-3">Ejemplo de uso:</p>
+                            <div class="space-y-2">
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">cURL:</p>
+                                    <code class="text-sm text-gray-800 block bg-gray-100 p-2 rounded">curl http://localhost:3000/api/rnc/123456789</code>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">JavaScript (Fetch):</p>
+                                    <code class="text-sm text-gray-800 block bg-gray-100 p-2 rounded">fetch('http://localhost:3000/api/rnc/123456789')</code>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-md">
+                            <p class="text-sm font-semibold text-gray-700 mb-2">Respuesta exitosa (200):</p>
+                            <pre class="text-sm text-gray-800 overflow-x-auto bg-gray-100 p-3 rounded"><code>{
+  "id": 1,
+  "rnc": "123456789",
+  "razon_social": "EMPRESA EJEMPLO SRL",
+  "actividad_economica": "SERVICIOS DE CONSULTORÍA EMPRESARIAL",
+  "fecha_inicio_operaciones": "15/03/2020",
+  "estado": "ACTIVO",
+  "regimen_pago": "NORMAL",
+  "fecha_carga": "2024-11-19T14:30:00.000Z"
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Endpoint 2: Buscar por Nombre -->
+                <section class="bg-white p-6 md:p-8 rounded-lg border border-gray-200 shadow-sm">
+                    <div class="border-l-4 border-[var(--medium-green)] pl-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">2. Buscar por Nombre</h3>
+                        <p class="text-gray-600 mb-4">Busca contribuyentes por nombre o razón social (búsqueda parcial, no case-sensitive).</p>
+                        
+                        <div class="bg-gray-50 p-4 rounded-md mb-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-2">Endpoint:</p>
+                            <code class="text-base text-[var(--medium-green)] font-mono">GET /api/buscar?nombre=:nombre&limit=:limit</code>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-md mb-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-3">Parámetros:</p>
+                            <ul class="space-y-2">
+                                <li class="flex items-start gap-2">
+                                    <code class="bg-gray-200 px-3 py-1 rounded text-sm font-mono">nombre</code>
+                                    <div>
+                                        <span class="text-sm text-gray-800"><strong>(requerido)</strong> - Texto a buscar en la razón social</span>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <code class="bg-gray-200 px-3 py-1 rounded text-sm font-mono">limit</code>
+                                    <div>
+                                        <span class="text-sm text-gray-800"><strong>(opcional)</strong> - Número máximo de resultados (default: 10, máx: 100)</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-md mb-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-3">Ejemplo de uso:</p>
+                            <div class="space-y-2">
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">cURL:</p>
+                                    <code class="text-sm text-gray-800 block bg-gray-100 p-2 rounded">curl "http://localhost:3000/api/buscar?nombre=EMPRESA&limit=5"</code>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">JavaScript (Fetch):</p>
+                                    <code class="text-sm text-gray-800 block bg-gray-100 p-2 rounded">fetch('http://localhost:3000/api/buscar?nombre=EMPRESA&limit=5')</code>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-md">
+                            <p class="text-sm font-semibold text-gray-700 mb-2">Respuesta exitosa (200):</p>
+                            <pre class="text-sm text-gray-800 overflow-x-auto bg-gray-100 p-3 rounded"><code>[
+  {
+    "id": 1,
+    "rnc": "123456789",
+    "razon_social": "EMPRESA EJEMPLO SRL",
+    "actividad_economica": "SERVICIOS DE CONSULTORÍA EMPRESARIAL",
+    "fecha_inicio_operaciones": "15/03/2020",
+    "estado": "ACTIVO",
+    "regimen_pago": "NORMAL",
+    "fecha_carga": "2024-11-19T14:30:00.000Z"
+  },
+  {
+    "id": 2,
+    "rnc": "987654321",
+    "razon_social": "EMPRESA COMERCIAL ABC",
+    "actividad_economica": "VENTA AL POR MENOR DE PRODUCTOS VARIOS",
+    "fecha_inicio_operaciones": "10/06/2018",
+    "estado": "ACTIVO",
+    "regimen_pago": "RST",
+    "fecha_carga": "2024-11-19T14:30:00.000Z"
+  }
+]</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Endpoint 3: Estadísticas -->
+                <section class="bg-white p-6 md:p-8 rounded-lg border border-gray-200 shadow-sm">
+                    <div class="border-l-4 border-[var(--medium-green)] pl-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">3. Estadísticas</h3>
+                        <p class="text-gray-600 mb-4">Obtiene estadísticas generales de la base de datos de contribuyentes.</p>
+                        
+                        <div class="bg-gray-50 p-4 rounded-md mb-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-2">Endpoint:</p>
+                            <code class="text-base text-[var(--medium-green)] font-mono">GET /api/stats</code>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-md mb-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-3">Ejemplo de uso:</p>
+                            <div class="space-y-2">
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">cURL:</p>
+                                    <code class="text-sm text-gray-800 block bg-gray-100 p-2 rounded">curl http://localhost:3000/api/stats</code>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">JavaScript (Fetch):</p>
+                                    <code class="text-sm text-gray-800 block bg-gray-100 p-2 rounded">fetch('http://localhost:3000/api/stats')</code>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-md">
+                            <p class="text-sm font-semibold text-gray-700 mb-2">Respuesta exitosa (200):</p>
+                            <pre class="text-sm text-gray-800 overflow-x-auto bg-gray-100 p-3 rounded"><code>{
+  "total": 345283,
+  "activos": 345283,
+  "regimenes": [
+    {
+      "regimen_pago": "NORMAL",
+      "cantidad": "313981"
+    },
+    {
+      "regimen_pago": "RST",
+      "cantidad": "31302"
+    }
+  ]
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Códigos de Error -->
+                <section class="bg-white p-6 md:p-8 rounded-lg border border-gray-200 shadow-sm">
+                    <div class="border-l-4 border-red-500 pl-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Códigos de Error</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
+                                <code class="bg-red-100 text-red-800 px-3 py-1 rounded font-semibold text-lg">400</code>
+                                <div>
+                                    <p class="font-semibold text-gray-900">Bad Request</p>
+                                    <p class="text-sm text-gray-700">Parámetros faltantes o inválidos</p>
+                                    <code class="text-xs text-gray-600 block mt-1">{"error": "Parámetro nombre requerido"}</code>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
+                                <code class="bg-red-100 text-red-800 px-3 py-1 rounded font-semibold text-lg">404</code>
+                                <div>
+                                    <p class="font-semibold text-gray-900">Not Found</p>
+                                    <p class="text-sm text-gray-700">RNC no encontrado en la base de datos</p>
+                                    <code class="text-xs text-gray-600 block mt-1">{"error": "RNC no encontrado"}</code>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
+                                <code class="bg-red-100 text-red-800 px-3 py-1 rounded font-semibold text-lg">500</code>
+                                <div>
+                                    <p class="font-semibold text-gray-900">Internal Server Error</p>
+                                    <p class="text-sm text-gray-700">Error en el servidor o base de datos</p>
+                                    <code class="text-xs text-gray-600 block mt-1">{"error": "Error al consultar la base de datos"}</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Notas Importantes -->
+                <section class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <div class="flex items-start gap-4">
+                        <span class="material-symbols-outlined text-3xl text-blue-600">info</span>
+                        <div>
+                            <h4 class="text-xl font-bold text-blue-900 mb-3">Notas Importantes</h4>
+                            <ul class="space-y-2 text-blue-800">
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-sm mt-1">check_circle</span>
+                                    <span>Todos los endpoints devuelven respuestas en formato JSON</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-sm mt-1">check_circle</span>
+                                    <span>La búsqueda por nombre no es case-sensitive (mayúsculas/minúsculas)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-sm mt-1">check_circle</span>
+                                    <span>Solo se incluyen RNC con estado ACTIVO en la base de datos</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-sm mt-1">check_circle</span>
+                                    <span>Los datos fueron actualizados el 15 de noviembre de 2025</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-sm mt-1">check_circle</span>
+                                    <span>No se requiere autenticación para usar la API</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="bg-gray-100 border-t border-gray-200 mt-auto">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-gray-500">
+                <p>© 2024 Portal de Consulta RNC. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Consulta de RNC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+        :root {
+            --dark-green: #044234;
+            --medium-green: #065f46;
+            --light-green: #059669;
+            --accent-gold: #f59e0b;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-[var(--dark-green)] shadow-md sticky top-0 z-10">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <div class="flex items-center space-x-4">
+                        <span class="material-symbols-outlined text-4xl text-white">account_balance</span>
+                        <div>
+                            <h1 class="text-2xl font-bold text-white tracking-wide">Consulta RNC de la República Dominicana</h1>
+                            <p class="text-xs text-gray-300 mt-1">Solo se pueden consultar RNC Activos actualmente • Última actualización: 19/11/2024</p>
+                        </div>
+                    </div>
+                    <nav class="hidden md:flex items-center space-x-6">
+                        <a class="text-white font-semibold" href="/">Dashboard</a>
+                        <a class="text-gray-300 hover:text-white transition-colors" href="/documentacion">Documentación</a>
+                    </nav>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                            <span class="text-lg font-semibold text-[var(--dark-green)]">RD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+            <div class="max-w-7xl mx-auto space-y-8">
+                <!-- Sección de búsqueda -->
+                <section class="bg-white p-6 md:p-8 rounded-lg border border-gray-200 shadow-sm">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Búsqueda de Contribuyente</h2>
+                    <div class="flex border-b border-gray-200 mb-6">
+                        <button id="tab-rnc" class="flex-1 py-3 px-4 text-center font-semibold text-[var(--medium-green)] border-b-2 border-[var(--medium-green)]" onclick="switchTab('rnc')">
+                            Buscar por RNC
+                        </button>
+                        <button id="tab-nombre" class="flex-1 py-3 px-4 text-center font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors duration-200" onclick="switchTab('nombre')">
+                            Buscar por Nombre
+                        </button>
+                    </div>
+
+                    <!-- Búsqueda por RNC -->
+                    <div id="rnc-search" class="flex flex-col sm:flex-row items-center gap-4">
+                        <div class="relative flex-grow w-full">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">badge</span>
+                            <input id="rnc-input" class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-md focus:ring-2 focus:ring-[var(--light-green)] focus:border-transparent" placeholder="Ingrese el RNC" type="text"/>
+                        </div>
+                        <button onclick="buscarPorRNC()" class="w-full sm:w-auto bg-[var(--medium-green)] hover:bg-[var(--dark-green)] text-white font-bold py-3 px-8 rounded-md transition-colors duration-200 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-xl">search</span>
+                            <span>Buscar</span>
+                        </button>
+                    </div>
+
+                    <!-- Búsqueda por Nombre -->
+                    <div id="nombre-search" class="flex flex-col sm:flex-row items-center gap-4" style="display: none;">
+                        <div class="relative flex-grow w-full">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">person_search</span>
+                            <input id="nombre-input" class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-md focus:ring-2 focus:ring-[var(--light-green)] focus:border-transparent" placeholder="Ingrese el nombre o razón social" type="text"/>
+                        </div>
+                        <button onclick="buscarPorNombre()" class="w-full sm:w-auto bg-[var(--medium-green)] hover:bg-[var(--dark-green)] text-white font-bold py-3 px-8 rounded-md transition-colors duration-200 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-xl">search</span>
+                            <span>Buscar</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Loading -->
+                <div id="loading" class="text-center py-8" style="display: none;">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--medium-green)]"></div>
+                    <p class="mt-4 text-gray-600">Buscando...</p>
+                </div>
+
+                <!-- Resultados -->
+                <div id="results"></div>
+
+                <!-- Estadísticas -->
+                <section>
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="material-symbols-outlined text-3xl text-[var(--dark-green)]">monitoring</span>
+                        <h2 class="text-2xl font-bold text-gray-900">Estadísticas Generales</h2>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="stats-content">
+                        <div class="bg-[var(--dark-green)] text-white p-6 rounded-lg shadow-lg">
+                            <p class="text-sm text-gray-300">Cargando...</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="bg-gray-100 border-t border-gray-200 mt-auto">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-gray-500">
+                <p>© 2024 Portal de Consulta RNC. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>
