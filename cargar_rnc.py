@@ -3,7 +3,7 @@ import csv
 from psycopg2.extras import execute_batch
 
 # Conexión a la base de datos
-conn_string = "postgresql://neondb_owner:npg_7ByhGQF5UXKv@ep-solitary-queen-a4r4gifr-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require"
+#conn_string = ""
 
 def crear_tabla(cursor):
     """Crea la tabla si no existe"""
