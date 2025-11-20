@@ -17,7 +17,7 @@ app.add_middleware(
 )
 
 # Conexión a la base de datos
-CONN_STRING = "postgresql://neondb_owner:npg_7ByhGQF5UXKv@ep-solitary-queen-a4r4gifr-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require"
+#CONN_STRING = ""
 
 def get_db_connection():
     return psycopg2.connect(CONN_STRING, cursor_factory=RealDictCursor)
